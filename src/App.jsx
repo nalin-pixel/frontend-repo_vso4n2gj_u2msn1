@@ -1,28 +1,35 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import CategoryTabs from './components/CategoryTabs';
+import GameGrid from './components/GameGrid';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [query, setQuery] = useState('');
+  const [category, setCategory] = useState('all');
+
+  const handleSearch = (q) => setQuery(q.trim().toLowerCase());
+
+  // We filter on the client for demo purposes (category only for now)
+  const filteredCategory = category;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
+    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50/40 text-slate-900">
+      <Navbar onSearch={handleSearch} />
+      <Hero />
 
-export default App
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">Kategori</h2>
+          <CategoryTabs active={category} onChange={setCategory} />
+        </section>
+
+        <GameGrid filter={filteredCategory} title={category === 'all' ? 'Game Unggulan' : `Kategori: ${category}`} />
+
+        <footer className="py-10 text-center text-sm text-slate-500">
+          © {new Date().getFullYear()} NgopiGame — Hiburan cepat langsung di browser
+        </footer>
+      </main>
+    </div>
+  );
+}
